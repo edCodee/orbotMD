@@ -23,10 +23,10 @@ export default function CrearPaciente() {
 
         const data = { ...form };
         data.patientProfileFreeBirthDate = new Date(data.patientProfileFreeBirthDate).toISOString();
-
+// https://localhost:7087/api/PatientProfileFree/create
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://localhost:7087/api/PatientProfileFree/create`, {
+            const response = await fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/PatientProfileFree/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
