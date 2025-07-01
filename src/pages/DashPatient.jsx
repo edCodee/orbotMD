@@ -122,7 +122,7 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
         const fetchDiagnostico = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch("https://localhost:7087/api/Diagnostics/diagnostics", {
+                const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/diagnostics", {
                     method: "GET",
                     headers: {
                         "Accept": "application/json",
