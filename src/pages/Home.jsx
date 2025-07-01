@@ -91,7 +91,7 @@ export default function Example() {
             {/* CENTRO: Teléfonos */}
             <div className="flex items-center justify-center gap-2 text-black text-sm">
                 <Phone className="w-5 h-5" />
-                <span>(+593) 98-354-0312  -  (+593) 98-487-4529</span>
+                <span>(+593) 98-354-03121  -  (+593) 98-487-4529</span>
             </div>
 
             {/* DERECHA: Enlace para donar */}
