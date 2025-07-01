@@ -14,7 +14,7 @@ const DiagnosticoInteligente = () => {
           return;
         }
 
-        const response = await fetch("https://localhost:7087/api/AnswerFree/my-answers", {
+        const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/AnswerFree/my-answers", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
