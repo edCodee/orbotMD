@@ -138,7 +138,7 @@ export default function CrearUsuario() {
         payload.userBirthDate = new Date(payload.userBirthDate).toISOString();
 
         try {
-        const response = await fetch(`https://localhost:7087/api/User`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/User`, {
             method: "POST",
             headers: {
             "Content-Type": "application/json",
