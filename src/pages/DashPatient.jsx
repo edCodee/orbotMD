@@ -11,8 +11,8 @@ export default function PacienteDashboard() {
 
     try {
         setCargandoDiagnostico(true);
-
-        const res = await fetch("https://localhost:7087/api/Diagnostics/predict-free", {
+// https://localhost:7087/api/Diagnostics/predict-free
+        const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
             method: "POST",
             headers: {
                 "Accept": "*/*",
@@ -55,8 +55,8 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
                     navigate("/login");
                     return;
                 }
-
-                const response = await fetch("https://localhost:7087/api/PatientProfileFree/my-profiles", {
+// https://localhost:7087/api/PatientProfileFree/my-profiles
+                const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/PatientProfileFree/my-profiles", {
                     method: "GET",
                     headers: {
                         "Accept": "application/json",
@@ -91,8 +91,8 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
 
     try {
         setCargandoDiagnostico(true);
-
-        const res = await fetch("https://localhost:7087/api/Diagnostics/predict-free", {
+// https://localhost:7087/api/Diagnostics/predict-free
+        const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
             method: "POST",
             headers: {
                 "Accept": "*/*",

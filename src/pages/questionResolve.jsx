@@ -12,8 +12,9 @@ export default function QuestionResolve() {
             try {
                 const token = localStorage.getItem("token");
                 if (!token) return navigate("/login");
+                // https://localhost:7087/api/QuestionFree
 
-                const response = await fetch("https://localhost:7087/api/QuestionFree", {
+                const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/QuestionFree", {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: "application/json",
@@ -52,7 +53,9 @@ export default function QuestionResolve() {
                     answerFreeAnswer: answer,
                 };
 
-                await fetch("https://localhost:7087/api/AnswerFree/create", {
+                // https://localhost:7087/api/AnswerFree/create
+
+                await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/AnswerFree/create", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
