@@ -14,7 +14,7 @@ const AssignRoles = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch(`http://${window.location.hostname}:5010/api/User`);
+            const response = await fetch(`https://localhost:7087/api/User`);
             if (!response.ok) throw new Error("Error al obtener usuarios");
             const data = await response.json();
             setUsers(data);
@@ -25,7 +25,7 @@ const AssignRoles = () => {
 
     const fetchRoles = async () => {
         try {
-            const response = await fetch(`http://${window.location.hostname}:5010/Api/User/Role`);
+            const response = await fetch(`https://localhost:7087/api/User/roles`);
             if (!response.ok) throw new Error("Error al obtener roles");
             const data = await response.json();
             setRoles(data);
@@ -58,7 +58,7 @@ const AssignRoles = () => {
         try {
             setLoading(true);
 
-            const response = await fetch(`http://${window.location.hostname}:5010/Api/UserRole`, {
+            const response = await fetch(`https://localhost:7087/api/UserRole`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

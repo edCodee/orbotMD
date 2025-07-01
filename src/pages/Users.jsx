@@ -7,7 +7,7 @@ export default function Usuarios() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://${window.location.hostname}:5010/Api/User`, {
+        fetch(`https://localhost:7087/api/User`, {
         headers: {
             Accept: "text/plain",
         },

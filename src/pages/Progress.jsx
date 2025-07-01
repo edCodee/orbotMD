@@ -1,7 +1,12 @@
-import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { confirmLogout } from '../utils/confirmLogout';
+import { useState, useEffect } from "react";
 
 export default function ProgresoPaciente() {
+    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(true); // Modal abierto por defecto
+
     const progresoData = {
         sesionesCompletadas: 18,
         sesionesTotales: 20,
@@ -17,6 +22,10 @@ export default function ProgresoPaciente() {
     const circumference = 2 * Math.PI * radius;
     const porcentajeSesion = (progresoData.sesionesCompletadas / progresoData.sesionesTotales) * 100;
     const dashOffset = circumference - (circumference * porcentajeSesion) / 100;
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <div className="flex flex-col lg:flex-row min-h-screen bg-[#1a202c] text-white">
@@ -42,10 +51,25 @@ export default function ProgresoPaciente() {
                     <Link to="/nextevaluationpatient" className="flex items-center gap-3 hover:text-teal-400">
                         <CalendarCheck /> <span>Próxima Evaluación</span>
                     </Link>
+
                     <Link
-                    to="/initmachine"
-                    className="flex items-center gap-3 bg-emerald-500 text-white font-semibold px-4 py-2 rounded hover:bg-teal-600 transition"
-                        >
+                        to="/login"
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            const confirmed = await confirmLogout();
+                            if (confirmed) {
+                                localStorage.removeItem('token');
+                                navigate('/login', { replace: true });
+                            }
+                        }}
+                        className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
+                    >
+                        <LogOut /> <span>Salir</span>
+                    </Link>
+                    <Link
+                        to="/initmachine"
+                        className="flex items-center gap-3 bg-emerald-500 text-white font-semibold px-4 py-2 rounded hover:bg-teal-600 transition"
+                    >
                         <Cpu /> <span>Diagnóstico Inteligente</span>
                     </Link>
                 </nav>
@@ -133,7 +157,78 @@ export default function ProgresoPaciente() {
                     </div>
                 </section>
             </main>
+
+            {/* Modal de advertencia */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#01274C]/60 backdrop-blur-md">
+                    <div
+                        className="
+                            relative 
+                            bg-gradient-to-br 
+                            from-[#009689]/80 
+                            to-[#013C6A]/80 
+                            rounded-3xl 
+                            shadow-2xl 
+                            p-8 
+                            max-w-sm 
+                            w-full 
+                            text-center 
+                            border 
+                            border-[#01274C]/50 
+                            backdrop-blur-xl 
+                            animate-fadeIn
+                        "
+                    >
+                        <h2 className="text-2xl font-semibold mb-4 text-[#50C878]">
+                            ¡Atención!
+                        </h2>
+                        <p className="mb-6 text-sm leading-relaxed text-[#E0F2F1]">
+                            Mil disculpas, necesitas una versión premium para acceder a esta sección.
+                        </p>
+
+                        <div className="flex justify-center gap-4">
+                            <Link
+                                        to="/errorpage2"
+                                        className="
+                                            bg-[#50C878]/80 
+                                            hover:bg-[#50C878] 
+                                            text-[#01274C] 
+                                            px-5 
+                                            py-2.5 
+                                            rounded-full 
+                                            shadow-md 
+                                            backdrop-blur-sm 
+                                            transition-all 
+                                            duration-300 
+                                            hover:scale-105
+                                        "
+                                        >
+                                        Haste Pro  💎
+                                        </Link>
+                            <button
+                                onClick={() => navigate("/dashpatient")}
+                                className="
+                                    bg-[#50C878]/80 
+                                    hover:bg-[#50C878] 
+                                    text-[#01274C] 
+                                    px-5 
+                                    py-2.5 
+                                    rounded-full 
+                                    shadow-md 
+                                    backdrop-blur-sm 
+                                    transition-all 
+                                    duration-300 
+                                    hover:scale-105
+                                "
+                            >
+                                Regresar
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
-

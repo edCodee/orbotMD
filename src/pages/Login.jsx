@@ -43,7 +43,7 @@ export default function LoginPage() {
         setError(null);
 
         try {
-            const response = await fetch(`http://${window.location.hostname}:5010/Api/User/Login`, {
+            const response = await fetch(`https://localhost:7087/api/User/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,11 +61,8 @@ export default function LoginPage() {
             }
 
             const data = await response.json();
-            console.log("Usuario logueado:", data);
-
-            // Guardar en localStorage
-            localStorage.setItem("userId", data.userId);
-            localStorage.setItem("roles", JSON.stringify(data.roles));
+            localStorage.setItem('token', data.token);
+            const userRole = data.roles[0]?.roleSerial;
 
             if (!data.roles || data.roles.length === 0) {
                 setError("No se encontraron roles asignados, contactese con el administrador.");
@@ -148,11 +145,11 @@ export default function LoginPage() {
                             required
                             className="mt-2 block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300"
                         />
-                        <div className="mt-2 text-right text-sm">
+                        {/* <div className="mt-2 text-right text-sm">
                             <a href="#" className="text-indigo-600 hover:text-indigo-500">
                                 ¿Olvidaste tu contraseña?
                             </a>
-                        </div>
+                        </div> */}
                     </div>
 
                     {error && (

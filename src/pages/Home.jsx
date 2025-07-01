@@ -1,14 +1,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { CalendarDays, Facebook, Heart, Instagram, Phone, PhoneIcon, Twitter, Users2, X, YoutubeIcon} from 'lucide-react';
+import { CalendarDays, Facebook, Heart, Instagram, Phone} from 'lucide-react';
 import { Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 import logo1 from '../assets/images/logodocbot.png';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion';
 import { FaHeart, FaYoutubeSquare } from 'react-icons/fa';
-import { GrGooglePay } from 'react-icons/gr';
-import { ImYoutube2 } from 'react-icons/im';
-import { BsTiktok, BsYoutube } from 'react-icons/bs';
 
 const Slideshow = () => {
         const images = [
@@ -53,6 +50,15 @@ function classNames(...classes) {
 }
 
 export default function Example() {
+        const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleCardClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
     return (
         <>
         <div className="min-h-full">
@@ -60,21 +66,21 @@ export default function Example() {
             {/* IZQUIERDA: Redes sociales */}
             <div className="flex items-center justify-center gap-4">
                 <a
-                href="https://www.facebook.com/UniversidadTecnicadeAmbatoOficial/?locale=es_LA"
+                href="/errorpage"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
                 <Facebook className="w-6 h-6 text-black hover:text-gray-300 transition-colors" />
                 </a>
                 <a
-                href="https://www.instagram.com/utecnicaambato/?hl=es"
+                href="/errorpage"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
                 <Instagram className="w-6 h-6 text-black hover:text-gray-300 transition-colors" />
                 </a>
                 <a
-                href="https://www.facebook.com/UniversidadTecnicadeAmbatoOficial/?locale=es_LA"
+                href="/errorpage"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
@@ -85,7 +91,7 @@ export default function Example() {
             {/* CENTRO: Teléfonos */}
             <div className="flex items-center justify-center gap-2 text-black text-sm">
                 <Phone className="w-5 h-5" />
-                <span>(+593) 983540312 - (+593) 405536</span>
+                <span>(+593) 98-354-0312  -  (+593) 98-487-4529</span>
             </div>
 
             {/* DERECHA: Enlace para donar */}
@@ -150,12 +156,13 @@ export default function Example() {
                 </a>
                 ))}
                 {/* BOTÓN AGENDAR CITA */}
-                <Link
-                    to="/login"
-                    className="bg-red-800 hover:bg-red-500 text-white px-4 py-2 rounded-md text-sm font-semibold transition duration-200"
-                >
-                    Agendar cita
-                </Link>
+        <button
+            onClick={handleCardClick}
+            className="bg-red-800 hover:bg-red-500 text-white px-4 py-2 rounded-md text-sm font-semibold transition duration-200"
+        >
+            Agendar cita
+        </button>
+
             </div>
 
             {/* BOTÓN HAMBURGUESA */}
@@ -169,6 +176,94 @@ export default function Example() {
                 </Disclosure.Button>
             </div>
             </div>
+
+{isModalOpen && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#01274C]/60 backdrop-blur-md">
+        <div
+        className="
+            relative 
+            bg-gradient-to-br 
+            from-[#009689]/80 
+            to-[#013C6A]/80 
+            rounded-3xl 
+            shadow-2xl 
+            p-8 
+            max-w-sm 
+            w-full 
+            text-center 
+            border 
+            border-[#01274C]/50 
+            backdrop-blur-xl 
+            animate-fadeIn
+        "
+        >
+        <h2 className="text-2xl font-semibold mb-4 text-[#50C878]">
+            ¡Atención!
+        </h2>
+        <p className="mb-6 text-sm leading-relaxed text-[#E0F2F1]">
+            Para poder Agendar una cita o realizar una prueba rapida de TDAH necesitas registrarte o iniciar sesión.
+        </p>
+
+        <div className="flex justify-center gap-4">
+            <Link
+            to="/createuser"
+            className="
+                bg-[#50C878]/80 
+                hover:bg-[#50C878] 
+                text-[#01274C] 
+                px-5 
+                py-2.5 
+                rounded-full 
+                shadow-md 
+                backdrop-blur-sm 
+                transition-all 
+                duration-300 
+                hover:scale-105
+            "
+            >
+            Ir
+            </Link>
+            <button
+            onClick={handleCloseModal}
+            className="
+                bg-[#01274C]/80 
+                hover:bg-[#01274C] 
+                text-white 
+                px-5 
+                py-2.5 
+                rounded-full 
+                shadow-md 
+                backdrop-blur-sm 
+                transition-all 
+                duration-300 
+                hover:scale-105
+            "
+            >
+            Atrás
+            </button>
+        </div>
+
+        <button
+            onClick={handleCloseModal}
+            className="
+            absolute 
+            top-4 
+            right-4 
+            text-[#50C878] 
+            hover:text-white 
+            transition-transform 
+            duration-200 
+            transform 
+            hover:scale-125
+            "
+        >
+            &#10005;
+        </button>
+        </div>
+    </div>
+)}
+
+            
         </div>
 
         {/* 📱 MENÚ MÓVIL */}
@@ -248,15 +343,51 @@ export default function Example() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
         >
-        <Link
-            to="/login"
-            className="flex items-center bg-white hover:bg-[#8A1A1A] text-black font-semibold px-5 py-3 rounded-lg shadow-md transition duration-300"
+
+<Link
+    to="/login"
+    className="flex items-center bg-white hover:bg-blue-600 text-black hover:text-white font-semibold px-5 py-3 rounded-lg shadow-md transition duration-300"
 >
-            <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M3.654 1.328a.82.82 0 00-.82.82v19.706c0 .715.821 1.161 1.387.76l14.76-9.74a.88.88 0 000-1.44L4.22 1.694a.819.819 0 00-.566-.166zM5.013 4.1l9.943 6.572-9.943 6.572V4.1z" />
+    {/* Icono de Usuario */}
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-6 h-6 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth="2"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 14c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.33 0-10 1.67-10 5v1h20v-1c0-3.33-6.67-5-10-5z"
+        />
+    </svg>
+    Iniciar sesión
+</Link>
+
+<button
+        onClick={handleCardClick}
+        className="flex items-center bg-emerald-500 hover:bg-teal-600 text-white font-semibold px-5 py-3 rounded-lg shadow-md transition duration-300"
+        >
+            {/* Ícono de IA */}
+            <svg
+            className="w-6 h-6 mr-2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
             </svg>
-            Iniciar sesión
-        </Link>
+            Prueba rápida de TDAH
+        </button>
+
 
 
         </motion.div>
@@ -264,7 +395,7 @@ export default function Example() {
                 </div>
             </section>
 
-            {/* Sección informativa sobre la Universidad Técnica de Ambato */}
+            {/* section Informativa*/}
 <section className="bg-white text-black py-16 px-6">
     <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         {/* Texto descriptivo */}
@@ -318,7 +449,7 @@ export default function Example() {
 </section>
 
 {/* Sección de Autoridades */}
-    <section className="bg-[#01274C] text-white py-20 px-6">
+    {/* <section className="bg-[#01274C] text-white py-20 px-6">
     <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-bold text-center mb-16">Miembros Fundadores</h2>
 
@@ -388,7 +519,7 @@ export default function Example() {
         </div>
         </div>
     </div>
-    </section>
+    </section> */}
 
 
         </main> 
@@ -408,11 +539,11 @@ export default function Example() {
         <div>
         <h4 className="text-xl font-semibold mb-3">Enlaces útiles</h4>
         <ul className="space-y-2 text-sm text-gray-300">
-            <li><a href="#" className="hover:text-white transition">Inicio</a></li>
-            <li><a href="#" className="hover:text-white transition">Síntomas Comunes</a></li>
-            <li><a href="#" className="hover:text-white transition">Detección temprana</a></li>
-            <li><a href="#" className="hover:text-white transition">Recomendaciones</a></li>
-            <li><a href="#" className="hover:text-white transition">Iniciar</a></li>
+            <li><a href="/" className="hover:text-white transition">Inicio</a></li>
+            <li><a href="/symptons" className="hover:text-white transition">Síntomas Comunes</a></li>
+            <li><a href="/earlydetection" className="hover:text-white transition">Detección temprana</a></li>
+            <li><a href="/recomendations" className="hover:text-white transition">Recomendaciones</a></li>
+            <li><a href="login" className="hover:text-white transition">Iniciar</a></li>
         </ul>
         </div>
 
@@ -420,7 +551,7 @@ export default function Example() {
         <div>
         <h4 className="text-xl font-semibold mb-3">Contacto</h4>
         <p className="text-sm text-gray-300">Av. Bolivariana, Ambato, Ecuador</p>
-        <p className="text-sm text-gray-300 mt-1">Tel: +593 3 3730880</p>
+        <p className="text-sm text-gray-300 mt-1">Tel: +593 98-487-4529</p>
         <p className="text-sm text-gray-300 mt-1">Email: info@orbot.edu.ec</p>
         {/* Redes Sociales */}
         <div className="flex space-x-4 mt-4">

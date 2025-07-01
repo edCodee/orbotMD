@@ -1,7 +1,12 @@
-import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { confirmLogout } from '../utils/confirmLogout';
+
+
 
 export default function DiagnosticoPaciente() {
+    const navigate = useNavigate();
+
     const diagnostico = {
         emitido: true,
         tipo: "TDAH - leve",
@@ -40,6 +45,21 @@ export default function DiagnosticoPaciente() {
                     <Link to="/nextevaluationpatient" className="flex items-center gap-3 hover:text-teal-400">
                         <CalendarCheck /> <span>Próxima Evaluación</span>
                     </Link>
+
+            <Link
+                        to="/login"
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            const confirmed = await confirmLogout();
+                            if (confirmed) {
+                                localStorage.removeItem('token');
+                                navigate('/login', { replace: true });
+                            }
+                        }}
+                        className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
+                    >
+                        <LogOut /> <span>Salir</span>
+            </Link>
                     <Link
                     to="/diagnosisintelligent"
                     className="flex items-center gap-3 bg-emerald-500 text-white font-semibold px-4 py-2 rounded hover:bg-teal-600 transition"
