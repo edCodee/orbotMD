@@ -44,7 +44,7 @@ export default function LoginPage() {
 
         // https://localhost:7087/api/User/login
         try {
-            const response = await fetch(`https://apidocbot20250701084725-ftdncfcyajb0fwcf.canadacentral-01.azurewebsites.net/api/User/login`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/User/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
