@@ -137,15 +137,19 @@ export default function CrearUsuario() {
         const payload = { ...form };
         payload.userBirthDate = new Date(payload.userBirthDate).toISOString();
 
-        try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/User`, {
+try {
+    const response = await fetch(
+        "https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User",
+        {
             method: "POST",
             headers: {
-            "Content-Type": "application/json",
-            accept: "text/plain",
+                "Content-Type": "application/json",
+                accept: "text/plain",
             },
             body: JSON.stringify(payload),
-        });
+        }
+    );
+
 
         if (response.ok) {
             setModal({
