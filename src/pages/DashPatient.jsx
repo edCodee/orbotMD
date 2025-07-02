@@ -231,7 +231,7 @@ export default function PacienteDashboard() {
                     {perfil === null && <p className="italic text-gray-400">Cargando datos del paciente...</p>}
                     {perfil === undefined && (
                         <div>
-                            <p className="italic text-red-400 mb-2">Antes de realizar el diagnóstico, por favor registre al paciente. No se ha encontrado un perfil creado para esta evaluación..</p>
+                            <p className="italic text-red-400 mb-2">⚠️ Antes de iniciar el diagnóstico, debe registrar el perfil del paciente. Solo se admiten niños entre 4 y 16 años.</p>
                             <Link
                                 to="/createpatientprofile"
                                 className="bg-teal-500 px-4 py-2 rounded font-semibold hover:bg-teal-600 transition"
