@@ -15,6 +15,8 @@ export default function PacienteDashboard() {
     const [diagnostico, setDiagnostico] = useState(null);
     const navigate = useNavigate();
     const [progreso, setProgreso] = useState(0);
+    const [highlightDiag, setHighlightDiag] = useState(false);
+
 
 
     const iniciarDiagnosticoIA = async () => {
@@ -208,12 +210,16 @@ export default function PacienteDashboard() {
                     >
                         <LogOut /> <span>Salir</span>
                     </Link>
+
                     <Link
-                        to="/initmachine"
-                        className="flex items-center gap-3 bg-emerald-500 text-white font-semibold px-4 py-2 rounded hover:bg-teal-600 transition"
+                    to="/initmachine"
+                    className={`flex items-center gap-3 bg-emerald-500 text-white font-semibold px-4 py-2 rounded hover:bg-teal-600 transition ${
+                        highlightDiag ? 'animate-pulse ring-4 ring-yellow-400 ring-opacity-50' : ''
+                    }`}
                     >
-                        <Cpu /> <span>Diagnóstico Inteligente</span>
+                    <Cpu /> <span>Diagnóstico Inteligente</span>
                     </Link>
+
                 </nav>
             </aside>
 
@@ -335,11 +341,18 @@ export default function PacienteDashboard() {
                     <p className="mb-6 text-sm leading-relaxed text-[#E0F2F1]">
                         Primero debes presionar el botón{" "}
                         <span className="font-semibold">“Diagnóstico Inteligente”</span> y
-                        completar las 20 preguntas de la encuesta.
+                        completar las 20 preguntas de la encuesta, si estas en un movil 
+                        seleccion menu la parte superior derecha.   <span class="hamburger-icon">☰</span>
                     </p>
                     <div className="flex justify-center">
                         <button
-                        onClick={() => setShowModal(false)}
+                    onClick={() => {
+                    setShowModal(false);
+                    setHighlightDiag(true);
+                    setMenuOpen(true); // <<< AQUI DESPLEGAMOS EL MENÚ EN MÓVIL
+                    setTimeout(() => setHighlightDiag(false), 6000);
+                    }}
+
                         className="
                             bg-[#FFCD3C]/80 
                             hover:bg-[#FFCD3C] 
