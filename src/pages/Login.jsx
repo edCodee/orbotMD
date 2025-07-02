@@ -62,6 +62,7 @@ export default function LoginPage() {
             }
 
             const data = await response.json();
+            localStorage.setItem("roles", JSON.stringify(data.roles));
             localStorage.setItem('token', data.token);
             const userRole = data.roles[0]?.roleSerial;
 
