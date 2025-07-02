@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'react-circular-progressbar/dist/styles.css';
+import { ImSpinner2 } from "react-icons/im";
+
+
 
 export default function CrearUsuario() {
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
 
     const provinciasEcuador = {
         "01": "Azuay", "02": "Bolivar", "03": "Cañar", "04": "Carchi", "05": "Cotopaxi",
@@ -134,6 +140,8 @@ export default function CrearUsuario() {
         e.preventDefault();
         if (!validateForm()) return;
 
+    setIsSubmitting(true); // MOSTRAR SPINNER
+
         const payload = { ...form };
         payload.userBirthDate = new Date(payload.userBirthDate).toISOString();
 
@@ -149,6 +157,9 @@ try {
             body: JSON.stringify(payload),
         }
     );
+
+        setIsSubmitting(false); // OCULTAR SPINNER
+
 
 
         if (response.ok) {
@@ -177,10 +188,12 @@ try {
             });
         }
         } catch (error) {
+        setIsSubmitting(false); // OCULTAR SPINNER
+
         setModal({
             open: true,
             type: "error",
-            message: `Error de red: ${error.message}`
+            message: `Error al crear el usuario: el correo electrónico, el nombre de usuario o la cédula ingresados ya existen en el sistema. Por favor, verifique la información e inténtelo nuevamente.`
         });
         }
     };
@@ -354,6 +367,14 @@ try {
             </div>
             </div>
         )}
+
+        {isSubmitting && (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#01274C]/70 backdrop-blur-sm">
+        <ImSpinner2 className="text-[#50C878] animate-spin text-5xl" />
+        <p className="mt-6 text-white font-medium">Creando usuario...</p>
+    </div>
+)}
+
         </div>
     );
 }

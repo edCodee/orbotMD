@@ -91,7 +91,7 @@ export default function Example() {
             {/* CENTRO: Teléfonos */}
             <div className="flex items-center justify-center gap-2 text-black text-sm">
                 <Phone className="w-5 h-5" />
-                <span>(+593) 98-354-03121  -  (+593) 98-487-4529</span>
+                <span>(+593) 98-354-0312  -  (+593) 98-487-4529</span>
             </div>
 
             {/* DERECHA: Enlace para donar */}
@@ -140,7 +140,7 @@ export default function Example() {
             <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             {/* LOGO */}
             <div className="flex items-center">
-                <img src={logo1} alt="UTA Logo" className="h-21 w-auto" />
+                <img src={logo1} alt="Logo" className="h-21 w-auto" />
             </div>
 
             {/* ENLACES EN ESCRITORIO */}

@@ -1,6 +1,3 @@
-// PASO 1: Instala la librería si no la tienes
-// npm install react-circular-progressbar
-
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -148,29 +145,19 @@ export default function QuestionResolve() {
             </div>
 
             {/* MODAL DE CARGA */}
-            {isSubmitting && (
+                {isSubmitting && (
                 <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#01274C]/70 backdrop-blur-sm">
-                    <div className="w-24 h-24">
-                        <CircularProgressbar
-                            value={100}
-                            text={`...`}
-                            styles={buildStyles({
-                                textSize: "24px",
-                                pathColor: "#50C878",
-                                textColor: "#50C878",
-                                trailColor: "#01446c",
-                            })}
-                        />
-                    </div>
+                    <div className="w-16 h-16 border-4 border-[#50C878] border-t-transparent rounded-full animate-spin"></div>
                     <p className="mt-6 text-white font-medium">Enviando respuestas...</p>
                 </div>
-            )}
+                )}
+
 
             {/* MODAL INICIO */}
             {showIntroModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#01274C]/60 backdrop-blur-md">
                     <div className="relative bg-gradient-to-br from-[#009689]/80 to-[#013C6A]/80 rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center border border-[#01274C]/50 animate-fadeIn">
-                        <h2 className="text-2xl font-semibold mb-4 text-[#50C878]">📝 Instrucciones</h2>
+                        <h2 className="text-2xl font-semibold mb-4 text-[#50C878]">Instrucciones</h2>
                         <p className="mb-4 text-sm leading-relaxed text-[#E0F2F1]">
                             Responda todas las preguntas con atención. Encontrará preguntas de <strong>Sí o No</strong> y otras con una escala del <strong>1 al 5</strong>:<br />
                             <strong>1</strong> = Nada &middot; <strong>2</strong> = Poco &middot; <strong>3</strong> = Moderado &middot; <strong>4</strong> = Mucho &middot; <strong>5</strong> = Totalmente
