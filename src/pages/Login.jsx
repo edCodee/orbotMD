@@ -83,7 +83,7 @@ export default function LoginPage() {
                 }
             } else {
                 // múltiples roles → ir al selector
-                navigate("/seleselectionrole");
+                navigate("/selectionrole");
             }
 
         } catch (err) {
