@@ -1,19 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-    LayoutDashboard,
-    UserPlus,
-    Briefcase,
-    Building2,
-    Settings,
-    Users,
-    Stethoscope,
-    NotebookPen,
-    BarChart,
-    Menu,
-    LogOut,
-    } from "lucide-react";
-    import { Link, useNavigate } from "react-router-dom";
-    import { confirmLogout } from "../utils/confirmLogout";
+import {LayoutDashboard,UserPlus,Briefcase,Building2,Settings,Users,Stethoscope,NotebookPen,BarChart,Menu,LogOut,} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { confirmLogout } from "../utils/confirmLogout";
 
     export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -24,16 +12,16 @@ import {
 
     // para la gráfica simulada
     const topEscuelas = [
-        { escuela: "Unidad Educativa Central", pacientes: 23 },
-        { escuela: "Colegio San José", pacientes: 19 },
-        { escuela: "Escuela Mixta Esperanza", pacientes: 17 },
+        { escuela: "Unidad Educativa Central", pacientes: 0 },
+        { escuela: "Colegio San José", pacientes: 0 },
+        { escuela: "Escuela Mixta Esperanza", pacientes: 0 },
     ];
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-
+// https://localhost:7087/api/User/count
         // total usuarios
-        fetch("https://localhost:7087/api/User/count", {
+        fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User/count", {
         headers: {
             Accept: "text/plain",
             Authorization: `Bearer ${token}`,
@@ -42,9 +30,9 @@ import {
         .then((res) => res.json())
         .then((data) => setTotalUsuarios(data))
         .catch((err) => console.error("Error usuarios count", err));
-
+// https://localhost:7087/api/User/latest-diagnostics
         // últimos diagnósticos
-        fetch("https://localhost:7087/api/User/latest-diagnostics", {
+        fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User/latest-diagnostics", {
         headers: {
             Accept: "text/plain",
             Authorization: `Bearer ${token}`,
