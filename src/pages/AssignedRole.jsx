@@ -11,10 +11,10 @@ const AssignRoles = () => {
         fetchUsers();
         fetchRoles();
     }, []);
-
+// https://localhost:7087/api/User
     const fetchUsers = async () => {
         try {
-            const response = await fetch(`https://localhost:7087/api/User`);
+            const response = await fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User`);
             if (!response.ok) throw new Error("Error al obtener usuarios");
             const data = await response.json();
             setUsers(data);
@@ -22,10 +22,10 @@ const AssignRoles = () => {
             console.error("Error cargando usuarios:", error);
         }
     };
-
+// https://localhost:7087/api/User/roles
     const fetchRoles = async () => {
         try {
-            const response = await fetch(`https://localhost:7087/api/User/roles`);
+            const response = await fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User/roles`);
             if (!response.ok) throw new Error("Error al obtener roles");
             const data = await response.json();
             setRoles(data);
@@ -57,8 +57,8 @@ const AssignRoles = () => {
 
         try {
             setLoading(true);
-
-            const response = await fetch(`https://localhost:7087/api/UserRole`, {
+// https://localhost:7087/api/UserRole
+            const response = await fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/UserRole`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -5,9 +5,9 @@ export default function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+// https://localhost:7087/api/User
     useEffect(() => {
-        fetch(`https://localhost:7087/api/User`, {
+        fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User`, {
         headers: {
             Accept: "text/plain",
         },
