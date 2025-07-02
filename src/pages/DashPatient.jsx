@@ -4,48 +4,47 @@ import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { confirmLogout } from '../utils/confirmLogout';
 
+
+
 export default function PacienteDashboard() {
 
-    const iniciarDiagnosticoIA = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-        setCargandoDiagnostico(true);
-// https://localhost:7087/api/Diagnostics/predict-free
-        const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
-            method: "POST",
-            headers: {
-                "Accept": "*/*",
-                "Authorization": `Bearer ${token}`
-            },
-        });
-
-        if (!res.ok) {
-            // error esperado: aún no responde encuesta
-            setCargandoDiagnostico(false);
-            setShowModal(true);
-            return;
-        }
-
-        // Esperar 10s para simular análisis con barra
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        window.location.reload(); // recarga para ver diagnóstico actualizado
-
-    } catch (error) {
-        console.error("Error al lanzar diagnóstico:", error);
-        setCargandoDiagnostico(false);
-        setShowModal(true);
-    }
-};
-
-
     const [showModal, setShowModal] = useState(false);
-const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
-
+    const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [perfil, setPerfil] = useState(null);
     const [diagnostico, setDiagnostico] = useState(null);
     const navigate = useNavigate();
+
+    // ✅ Solo esta versión fuera del useEffect
+    const iniciarDiagnosticoIA = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            setCargandoDiagnostico(true);
+            const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
+                method: "POST",
+                headers: {
+                    "Accept": "*/*",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
+
+            if (!res.ok) {
+                setCargandoDiagnostico(false);
+                setShowModal(true);
+                return;
+            }
+
+            // Esperar 10s para simular análisis con barra
+            await new Promise((resolve) => setTimeout(resolve, 10000));
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Error al lanzar diagnóstico:", error);
+            setCargandoDiagnostico(false);
+            setShowModal(true);
+        }
+    };
 
     useEffect(() => {
         const fetchPerfil = async () => {
@@ -55,7 +54,6 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
                     navigate("/login");
                     return;
                 }
-// https://localhost:7087/api/PatientProfileFree/my-profiles
                 const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/PatientProfileFree/my-profiles", {
                     method: "GET",
                     headers: {
@@ -86,39 +84,6 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
             }
         };
 
-        const iniciarDiagnosticoIA = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-        setCargandoDiagnostico(true);
-// https://localhost:7087/api/Diagnostics/predict-free
-        const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
-            method: "POST",
-            headers: {
-                "Accept": "*/*",
-                "Authorization": `Bearer ${token}`
-            },
-        });
-
-        if (!res.ok) {
-            // error esperado: aún no responde encuesta
-            setCargandoDiagnostico(false);
-            setShowModal(true);
-            return;
-        }
-
-        // Esperar 10s para simular análisis con barra
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        window.location.reload(); // recarga para ver diagnóstico actualizado
-
-    } catch (error) {
-        console.error("Error al lanzar diagnóstico:", error);
-        setCargandoDiagnostico(false);
-        setShowModal(true);
-    }
-};
-
-
         const fetchDiagnostico = async () => {
             try {
                 const token = localStorage.getItem("token");
@@ -138,15 +103,14 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
                 const data = await res.json();
                 if (data.length > 0) {
                     const diag = data[0];
-                setDiagnostico({
-                    tipo: diag.diagnosticMlFreeRiskLevel,
-                    recomendaciones: diag.diagnosticMlFreeRecommendations,
-                    fecha: new Date(diag.diagnosticMlFreeCreatedAt).toLocaleDateString(),
-                    urgente: diag.diagnosticMlFreeNeedUrgentPsychologist
-                });
-
+                    setDiagnostico({
+                        tipo: diag.diagnosticMlFreeRiskLevel,
+                        recomendaciones: diag.diagnosticMlFreeRecommendations,
+                        fecha: new Date(diag.diagnosticMlFreeCreatedAt).toLocaleDateString(),
+                        urgente: diag.diagnosticMlFreeNeedUrgentPsychologist
+                    });
                 } else {
-                    setDiagnostico(undefined); // sin diagnóstico
+                    setDiagnostico(undefined);
                 }
 
             } catch (error) {
@@ -241,11 +205,11 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
             <main className="flex-1 p-6 lg:p-10 space-y-10">
                 {/* Perfil */}
                 <section className="bg-gray-800 p-6 rounded-xl shadow">
-                    <h2 className="text-xl font-bold text-teal-300 mb-4">Datos Personales</h2>
+                    <h2 className="text-xl font-bold text-teal-300 mb-4">Datos Personales del Paciente</h2>
                     {perfil === null && <p className="italic text-gray-400">Cargando datos del paciente...</p>}
                     {perfil === undefined && (
                         <div>
-                            <p className="italic text-red-400 mb-2">No tiene un perfil creado, antes de hacer cualquier interacción cree el perfil del paciente.</p>
+                            <p className="italic text-red-400 mb-2">Antes de realizar el diagnóstico, por favor registre al paciente. No se ha encontrado un perfil creado para esta evaluación..</p>
                             <Link
                                 to="/createpatientprofile"
                                 className="bg-teal-500 px-4 py-2 rounded font-semibold hover:bg-teal-600 transition"
@@ -269,7 +233,7 @@ const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
     <h2 className="text-xl font-bold text-teal-300 mb-4">Diagnóstico</h2>
 
     {diagnostico === null && (
-        <p className="italic text-gray-400">Cargando diagnóstico...</p>
+        <p className="italic text-gray-400">En espera del registro del paciente para continuar con el proceso.</p>
     )}
 
     {diagnostico === undefined && (

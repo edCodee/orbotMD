@@ -57,7 +57,7 @@ const DiagnosticoInteligente = () => {
         </p>
 
         {hasAnswered === null ? (
-          <p className="text-white">Cargando...</p>
+          <p className="text-white">Es necesario crear el perfil del paciente antes de iniciar la recolección de sus datos.</p>
         ) : hasAnswered ? (
           <div className="text-red-400 font-semibold text-center space-y-4">
             <p>Mil disculpas, solo puedes usar un paciente en la versión gratis.</p>
