@@ -14,20 +14,26 @@ export default function PacienteDashboard() {
     const [perfil, setPerfil] = useState(null);
     const [diagnostico, setDiagnostico] = useState(null);
     const navigate = useNavigate();
+    const [progreso, setProgreso] = useState(0);
 
-    // ✅ Solo esta versión fuera del useEffect
+
     const iniciarDiagnosticoIA = async () => {
         const token = localStorage.getItem("token");
 
         try {
             setCargandoDiagnostico(true);
-            const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free", {
-                method: "POST",
-                headers: {
-                    "Accept": "*/*",
-                    "Authorization": `Bearer ${token}`
-                },
-            });
+            setProgreso(0); // iniciar barra en 0
+
+            const res = await fetch(
+                "https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free",
+                {
+                    method: "POST",
+                    headers: {
+                        Accept: "*/*",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             if (!res.ok) {
                 setCargandoDiagnostico(false);
@@ -35,16 +41,26 @@ export default function PacienteDashboard() {
                 return;
             }
 
-            // Esperar 10s para simular análisis con barra
-            await new Promise((resolve) => setTimeout(resolve, 10000));
-            window.location.reload();
+            // barra de progreso durante 10s
+            let porcentaje = 0;
+            const interval = setInterval(() => {
+                porcentaje += 10; // cada segundo aumenta 10%
+                setProgreso(porcentaje);
+                if (porcentaje >= 100) {
+                    clearInterval(interval);
+                }
+            }, 1000);
 
+            await new Promise((resolve) => setTimeout(resolve, 10000));
+
+            window.location.reload();
         } catch (error) {
             console.error("Error al lanzar diagnóstico:", error);
             setCargandoDiagnostico(false);
             setShowModal(true);
         }
     };
+
 
     useEffect(() => {
         const fetchPerfil = async () => {
@@ -246,15 +262,18 @@ export default function PacienteDashboard() {
     Empezar diagnóstico de IA
 </Link>
 
-{cargandoDiagnostico && (
-    <div className="mt-4 w-full bg-gray-700 rounded-full h-4">
+    {cargandoDiagnostico && (
+    <div className="mt-4 w-full max-w-md mx-auto">
+        <div className="relative w-full h-4 bg-gray-700 rounded-full overflow-hidden shadow-inner">
         <div
-            className="bg-emerald-400 h-4 rounded-full animate-pulse"
-            style={{ width: '100%', transition: 'width 10s linear' }}
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-400 via-teal-500 to-cyan-500 transition-all duration-1000 ease-linear"
+            style={{ width: `${progreso}%` }}
         ></div>
-        <p className="text-sm text-gray-300 mt-1">Analizando con IA... Por favor espera.</p>
+        </div>
+        <p className="text-sm text-gray-300 mt-2 text-center">{progreso}% completado - analizando IA...</p>
     </div>
-)}
+    )}
+
 
         </div>
     )}
@@ -290,20 +309,58 @@ export default function PacienteDashboard() {
                         <p className="italic text-gray-400">Sin registros disponibles.</p>
                     )}
                 </section>
-{showModal && (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white p-6 rounded-xl shadow-lg w-11/12 max-w-md text-center text-black">
-            <h3 className="text-lg font-bold mb-4">⚠️ Atención</h3>
-            <p className="mb-4">Primero debes presionar el botón <span className="font-semibold">“Diagnóstico Inteligente”</span> y completar las 20 preguntas de la encuesta.</p>
-            <button
-                onClick={() => setShowModal(false)}
-                className="bg-rose-600 text-white px-4 py-2 rounded hover:bg-rose-700 transition"
-            >
-                Entendido
-            </button>
-        </div>
-    </div>
-)}
+
+
+                {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#01274C]/60 backdrop-blur-md">
+                    <div
+                    className="
+                        relative 
+                        bg-gradient-to-br 
+                        from-[#009689]/80 
+                        to-[#013C6A]/80 
+                        rounded-3xl 
+                        shadow-2xl 
+                        p-8 
+                        max-w-sm 
+                        w-full 
+                        text-center 
+                        border 
+                        border-[#01274C]/50 
+                        backdrop-blur-xl 
+                        animate-fadeIn
+                    "
+                    >
+                    <h2 className="text-2xl font-semibold mb-4 text-[#FFCD3C]">⚠️ Atención</h2>
+                    <p className="mb-6 text-sm leading-relaxed text-[#E0F2F1]">
+                        Primero debes presionar el botón{" "}
+                        <span className="font-semibold">“Diagnóstico Inteligente”</span> y
+                        completar las 20 preguntas de la encuesta.
+                    </p>
+                    <div className="flex justify-center">
+                        <button
+                        onClick={() => setShowModal(false)}
+                        className="
+                            bg-[#FFCD3C]/80 
+                            hover:bg-[#FFCD3C] 
+                            text-[#01274C] 
+                            px-5 
+                            py-2.5 
+                            rounded-full 
+                            shadow-md 
+                            backdrop-blur-sm 
+                            transition-all 
+                            duration-300 
+                            hover:scale-105
+                        "
+                        >
+                        Entendido
+                        </button>
+                    </div>
+                    </div>
+                </div>
+                )}
+
 
 
             </main>
