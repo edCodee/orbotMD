@@ -37,38 +37,45 @@ import {
             return;
         }
 
-        const data = await response.json();
+                const data = await response.json();
         if (data.length > 0) {
             const diag = data[0];
 
             // recomendaciones dinámicas
             let acciones = [];
             if (diag.diagnosticMlFreeRiskLevel === "Alto") {
-            acciones = [
-                "Consultar a un especialista de forma inmediata.",
-                "Establecer límites claros en rutinas diarias.",
-                "Aumentar supervisión en actividades escolares.",
-                "Fomentar hábitos de sueño saludables.",
-                "Reducir exposición a pantallas electrónicas.",
-                "Establecer espacios de diálogo familiar diario.",
-                "Priorizar actividades al aire libre y sociales.",
-                "Planificar seguimiento psicológico profesional.",
-                "Incluir técnicas de respiración o mindfulness.",
-                "Monitorear cambios emocionales o de conducta.",
-            ];
-            } else if (diag.diagnosticMlFreeRiskLevel === "Medio") {
-            acciones = [
-                "Fomentar comunicación activa en casa.",
-                "Acompañar rutinas escolares diariamente.",
-                "Promover actividades de relajación.",
-                "Limitar uso de dispositivos electrónicos.",
-            ];
+                acciones = [
+                    "Consultar a un especialista de forma inmediata.",
+                    "Establecer límites claros en rutinas diarias.",
+                    "Aumentar supervisión en actividades escolares.",
+                    "Fomentar hábitos de sueño saludables.",
+                    "Reducir exposición a pantallas electrónicas.",
+                    "Establecer espacios de diálogo familiar diario.",
+                    "Priorizar actividades al aire libre y sociales.",
+                    "Planificar seguimiento psicológico profesional.",
+                    "Incluir técnicas de respiración o mindfulness.",
+                    "Monitorear cambios emocionales o de conducta.",
+                ];
+            } else if (diag.diagnosticMlFreeRiskLevel === "Moderado") { // CAMBIO: "Medio" ahora es "Moderado"
+                acciones = [
+                    "Fomentar comunicación activa en casa.",
+                    "Acompañar rutinas escolares diariamente.",
+                    "Promover actividades de relajación.",
+                    "Limitar uso de dispositivos electrónicos.",
+                ];
             } else if (diag.diagnosticMlFreeRiskLevel === "Bajo") {
-            acciones = [
-                "Mantener hábitos de estudio estables.",
-                "Realizar chequeos periódicos con el docente.",
-                "Fortalecer actividades recreativas saludables.",
-            ];
+                acciones = [
+                    "Mantener hábitos de estudio estables.",
+                    "Realizar chequeos periódicos con el docente.",
+                    "Fortalecer actividades recreativas saludables.",
+                ];
+            } else if (diag.diagnosticMlFreeRiskLevel === "No") { // CAMBIO AÑADIDO: Nueva clase "No"
+                acciones = [
+                    "Mantener un ambiente de apoyo y bienestar emocional.",
+                    "Fomentar la comunicación abierta en el entorno familiar.",
+                    "Promover actividades saludables y recreativas.",
+                    "Monitorear el desarrollo y comportamiento de manera regular."
+                ];
             }
 
             setDiagnostico({
