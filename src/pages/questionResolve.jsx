@@ -19,7 +19,7 @@ export default function QuestionResolve() {
                 const token = localStorage.getItem("token");
                 if (!token) return navigate("/login");
 
-                const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/QuestionFree", {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/QuestionFree`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         Accept: "application/json",
@@ -60,7 +60,7 @@ export default function QuestionResolve() {
                     answerFreeAnswer: answer,
                 };
 
-                await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/AnswerFree/create", {
+                await fetch(`${import.meta.env.VITE_API_URL}/api/AnswerFree/create`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

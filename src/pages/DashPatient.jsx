@@ -26,8 +26,9 @@ export default function PacienteDashboard() {
             setCargandoDiagnostico(true);
             setProgreso(0); // iniciar barra en 0
 
+//ENDPOINT
             const res = await fetch(
-                "https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/predict-free",
+                `${import.meta.env.VITE_API_URL}/api/Diagnostics/predict-free`,
                 {
                     method: "POST",
                     headers: {
@@ -72,7 +73,9 @@ export default function PacienteDashboard() {
                     navigate("/login");
                     return;
                 }
-                const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/PatientProfileFree/my-profiles", {
+
+                //ENDPOINT
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/PatientProfileFree/my-profiles`, {
                     method: "GET",
                     headers: {
                         "Accept": "application/json",
@@ -105,7 +108,7 @@ export default function PacienteDashboard() {
         const fetchDiagnostico = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/diagnostics", {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/Diagnostics/diagnostics`, {
                     method: "GET",
                     headers: {
                         "Accept": "application/json",

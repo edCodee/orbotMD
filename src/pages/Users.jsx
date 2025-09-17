@@ -7,7 +7,7 @@ export default function Usuarios() {
     const [error, setError] = useState(null);
 // https://localhost:7087/api/User
     useEffect(() => {
-        fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/User`, {
         headers: {
             Accept: "text/plain",
         },

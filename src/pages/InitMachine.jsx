@@ -14,7 +14,8 @@ const DiagnosticoInteligente = () => {
           return;
         }
 
-        const response = await fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/AnswerFree/my-answers", {
+        //ENDPOINT
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/AnswerFree/my-answers`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",

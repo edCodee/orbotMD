@@ -23,7 +23,7 @@ import {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-            "https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/Diagnostics/diagnostics",
+            `${import.meta.env.VITE_API_URL}/api/Diagnostics/diagnostics`,
             {
             headers: {
                 Accept: "application/json",

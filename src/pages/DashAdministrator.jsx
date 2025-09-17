@@ -21,7 +21,7 @@ import { confirmLogout } from "../utils/confirmLogout";
         const token = localStorage.getItem("token");
 // https://localhost:7087/api/User/count
         // total usuarios
-        fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User/count", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/User/count`, {
         headers: {
             Accept: "text/plain",
             Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ import { confirmLogout } from "../utils/confirmLogout";
         .catch((err) => console.error("Error usuarios count", err));
 // https://localhost:7087/api/User/latest-diagnostics
         // últimos diagnósticos
-        fetch("https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User/latest-diagnostics", {
+        fetch(`${import.meta.env.VITE_API_URL}/api/User/latest-diagnostics`, {
         headers: {
             Accept: "text/plain",
             Authorization: `Bearer ${token}`,

@@ -26,7 +26,7 @@ export default function CrearPaciente() {
 // https://localhost:7087/api/PatientProfileFree/create
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/PatientProfileFree/create`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/PatientProfileFree/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
