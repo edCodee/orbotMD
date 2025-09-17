@@ -147,7 +147,7 @@ export default function CrearUsuario() {
 
 try {
     const response = await fetch(
-        "https://apidocbot20250701094126-ccgqenfaese6g5gh.canadacentral-01.azurewebsites.net/api/User",
+        `${import.meta.env.VITE_API_URL}/api/User`,
         {
             method: "POST",
             headers: {
