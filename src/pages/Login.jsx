@@ -42,7 +42,6 @@ export default function LoginPage() {
         e.preventDefault();
         setError(null);
 
-        // https://localhost:7087/api/User/login
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/User/login`, {
                 method: "POST",

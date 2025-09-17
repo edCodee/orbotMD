@@ -51,7 +51,7 @@ import { confirmLogout } from "../utils/confirmLogout";
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
             } lg:translate-x-0`}
         >
-            <div className="text-2xl font-bold text-teal-400 mb-6">Admin Salud</div>
+            <div className="text-2xl font-bold text-teal-400 mb-6">Adminj Salud</div>
             <nav className="space-y-4">
             <Link to="/user" className="flex items-center gap-3 hover:text-teal-400">
                 <Users /> <span>Usuarios</span>
