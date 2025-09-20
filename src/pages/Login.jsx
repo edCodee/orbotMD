@@ -43,6 +43,7 @@ export default function LoginPage() {
         setError(null);
 
         try {
+            //ENDPOINT
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/User/login`, {
                 method: "POST",
                 headers: {
