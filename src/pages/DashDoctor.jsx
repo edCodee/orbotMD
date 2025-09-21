@@ -15,15 +15,15 @@ import {useNavigate, Link } from "react-router-dom";
         <aside className="w-full md:w-64 bg-[#2d3748] p-6 space-y-6 md:min-h-screen">
             <div className="text-2xl font-bold text-teal-400 mb-6 text-center md:text-left">Panel Psicólogo</div>
             <nav className="space-y-4">
-            <Link to="/pacientes" className="flex items-center gap-3 hover:text-teal-300">
-                <User /> <span>Brazo Mecánico</span>
+            <Link to="/dashdoctorpatientlist" className="flex items-center gap-3 hover:text-teal-300">
+                <User /> <span>Pacientes</span>
             </Link>
-            <Link to="/nueva-evaluacion" className="flex items-center gap-3 hover:text-teal-300">
+            {/* <Link to="/nueva-evaluacion" className="flex items-center gap-3 hover:text-teal-300">
                 <FilePlus /> <span>Laberinto Canica</span>
             </Link>
             <Link to="/evaluar-estaciones" className="flex items-center gap-3 hover:text-teal-300">
                 <ClipboardList /> <span>Code & GO</span>
-            </Link>
+            </Link> */}
 
                     <Link
                         to="/login"
@@ -49,9 +49,9 @@ import {useNavigate, Link } from "react-router-dom";
 
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <DashboardCard to="/nueva-evaluacion" icon={<ClipboardCheck className="text-teal-400" size={32} />} title="Brazo Mecánico" description="Evaluar precisión y tiempo en clasificación robótica." />
-            <DashboardCard to="/evaluar-estaciones" icon={<Brain className="text-blue-400" size={32} />} title="Laberinto Canica" description="Registrar coordinación visomotora y control sensorial." />
-            <DashboardCard to="/aplicar-test" icon={<FileCheck className="text-pink-400" size={32} />} title="Code & GO" description="Analizar lógica secuencial y ejecución de rutas." />
+            <DashboardCard to="/dashdoctorpatientlist" icon={<User className="text-teal-400" size={32} />} title="Pacientes" description="Lista de pacientes registrados." />
+            {/* <DashboardCard to="/evaluar-estaciones" icon={<Brain className="text-blue-400" size={32} />} title="Laberinto Canica" description="Registrar coordinación visomotora y control sensorial." />
+            <DashboardCard to="/aplicar-test" icon={<FileCheck className="text-pink-400" size={32} />} title="Code & GO" description="Analizar lógica secuencial y ejecución de rutas." /> */}
             {/* <DashboardCard to="/diagnosticos-alertas" icon={<Brain className="text-purple-300" size={32} />} title="Diagnóstico y Alertas" description="Registrar diagnóstico clínico o alertas." />
             <DashboardCard to="/resumen-evaluacion" icon={<ClipboardCheck className="text-green-300" size={32} />} title="Resumen de Evaluación" description="Ver resumen de la sesión actual." />
             <DashboardCard to="/sesiones" icon={<MessageSquareHeart className="text-emerald-300" size={32} />} title="Sesiones Activas" description="Ver o continuar sesiones en curso." />

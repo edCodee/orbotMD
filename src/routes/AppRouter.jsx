@@ -28,6 +28,8 @@ import ErrorPage from '../pages/errorPage'
 import CreatePatientProfileFree from '../pages/createPatientProfileFree'
 import ErrorPage2 from '../pages/errorPage2'
 import QuestionResolve from '../pages/questionResolve'
+import DashDoctorPatientList from '../pages/DashDoctorPatientList'
+import PatientDetail from "../pages/DashDoctorPatientDetail";
 
 export default function AppRouter(){
     return(
@@ -61,6 +63,21 @@ export default function AppRouter(){
                 <Route path="/errorpage2" element={<ErrorPage2/>} />
 
                 {/*Rutas Protegidas*/}
+
+                <Route 
+                path="/paciente/:id" 
+                element={
+                    <ProtectedRoute>
+                    <PatientDetail />
+                    </ProtectedRoute>
+                }/>
+
+                <Route path="/dashdoctorpatientlist" element={
+                    <ProtectedRoute>
+                        <DashDoctorPatientList/>
+                    </ProtectedRoute>
+                }/>
+
                 <Route path="/dashdoctor" element={
                     <ProtectedRoute>
                         <DashDoctor/>
