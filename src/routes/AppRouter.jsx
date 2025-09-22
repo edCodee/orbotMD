@@ -30,6 +30,7 @@ import ErrorPage2 from '../pages/errorPage2'
 import QuestionResolve from '../pages/questionResolve'
 import DashDoctorPatientList from '../pages/DashDoctorPatientList'
 import PatientDetail from "../pages/DashDoctorPatientDetail";
+import DashDoctorMechanicalArm from "../pages/DashDoctorMechanicalArm";
 
 export default function AppRouter(){
     return(
@@ -63,6 +64,14 @@ export default function AppRouter(){
                 <Route path="/errorpage2" element={<ErrorPage2/>} />
 
                 {/*Rutas Protegidas*/}
+
+                <Route 
+                path="/dashdoctormechanicalarm" 
+                element={
+                    <ProtectedRoute>
+                    <DashDoctorMechanicalArm />
+                    </ProtectedRoute>
+                }/>
 
                 <Route 
                 path="/paciente/:id" 
