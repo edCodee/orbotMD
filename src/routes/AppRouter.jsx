@@ -31,6 +31,7 @@ import QuestionResolve from '../pages/questionResolve'
 import DashDoctorPatientList from '../pages/DashDoctorPatientList'
 import PatientDetail from "../pages/DashDoctorPatientDetail";
 import DashDoctorMechanicalArm from "../pages/DashDoctorMechanicalArm";
+import GameMouse from "../pages/GameMouse";
 
 export default function AppRouter(){
     return(
@@ -64,6 +65,13 @@ export default function AppRouter(){
                 <Route path="/errorpage2" element={<ErrorPage2/>} />
 
                 {/*Rutas Protegidas*/}
+
+                <Route path="/gamemouse" 
+                element={
+                <ProtectedRoute>
+                    <GameMouse/>
+                </ProtectedRoute>
+                }/>
 
                 <Route path="/dashdoctormechanicalarm/:id" 
                 element={

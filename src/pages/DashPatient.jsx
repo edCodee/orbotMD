@@ -1,4 +1,4 @@
-import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu, LogOut } from "lucide-react";
+import { CalendarCheck, ClipboardList, FileBarChart2, HeartPulse, ScrollText, UserCircle, Cpu, LogOut, Gamepad2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -198,6 +198,9 @@ export default function PacienteDashboard() {
                     </Link>
                     <Link to="/nextevaluationpatient" className="flex items-center gap-3 hover:text-teal-400">
                         <CalendarCheck /> <span>Próxima Evaluación</span>
+                    </Link>
+                    <Link to="/gamemouse" className="flex items-center gap-3 hover:text-teal-400">
+                        <Gamepad2 /> <span>Misión Queso</span>
                     </Link>
                     <Link
                         to="/login"
