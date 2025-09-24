@@ -65,13 +65,13 @@ export default function AppRouter(){
 
                 {/*Rutas Protegidas*/}
 
-                <Route 
-                path="/dashdoctormechanicalarm" 
+                <Route path="/dashdoctormechanicalarm/:id" 
                 element={
-                    <ProtectedRoute>
-                    <DashDoctorMechanicalArm />
-                    </ProtectedRoute>
+                <ProtectedRoute>
+                    <DashDoctorMechanicalArm/>
+                </ProtectedRoute>
                 }/>
+
 
                 <Route 
                 path="/paciente/:id" 
