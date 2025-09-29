@@ -79,14 +79,14 @@ export default function PatientDetail() {
             /> 
 
             <DashboardCard 
-                to="/dashDoctorMarbleMaze"
+            to={`/laberintocanica/${patient.patientProfileFreeId}`}
                 icon={<Brain className="text-blue-400" size={32} />} 
                 title="Laberinto Canica"
                 description="Ejercicio de coordinación."
             />
 
             <DashboardCard 
-                to="/dashDoctorCodeGo"
+            to={`/codego/${patient.patientProfileFreeId}`}
                 icon={<FileCheck className="text-pink-400" size={32} />} 
                 title="Code & Go"
                 description="Actividad de programación."

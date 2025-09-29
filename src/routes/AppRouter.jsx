@@ -34,6 +34,8 @@ import DashDoctorMechanicalArm from "../pages/DashDoctorMechanicalArm";
 import Camera from "../pages/camera"
 import GameMouse from "../pages/GameMouse";
 import ProgressUser from "../pages/ProgressUser"
+import LaberintoCanica from "../pages/LaberintoCanica";
+import DashDoctorCodeGo from "../pages/DashDoctorCodeGo";
 
 export default function AppRouter(){
     return(
@@ -67,6 +69,20 @@ export default function AppRouter(){
                 <Route path="/errorpage2" element={<ErrorPage2/>} />
 
                 {/*Rutas Protegidas*/}
+
+                <Route path="/codego/:id" 
+                element={
+                <ProtectedRoute>
+                    <DashDoctorCodeGo/>
+                </ProtectedRoute>
+                }/>
+
+                <Route path="/laberintocanica/:id" 
+                element={
+                <ProtectedRoute>
+                    <LaberintoCanica/>
+                </ProtectedRoute>
+                }/>
 
                 <Route 
                 path="/dashdoctorprogress/:id" 

@@ -1,11 +1,68 @@
-import { LogOut, User } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { confirmLogout } from '../utils/confirmLogout';
-import { Link, useNavigate } from "react-router-dom";
+import { LogOut, User, CheckCircle, XCircle } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { confirmLogout } from '../utils/confirmLogout'; // Asumo que esta función existe
 
+// ===============================================
+// Componente de Modal de Resultados (Añadido)
+// ===============================================
+const ResultModal = ({ result, onClose }) => {
+    if (!result) return null;
 
+    const isSuccess = result.diagnosticMLMechanicalRiskLevel; // Un campo existe si hay éxito
 
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+            <div className="bg-[#2d3748] rounded-2xl shadow-2xl p-8 max-w-lg w-full transform transition-all scale-100">
+                <div className="flex flex-col items-center text-center mb-6">
+                    {isSuccess ? (
+                        <CheckCircle className="w-12 h-12 text-teal-400 mb-3" />
+                    ) : (
+                        <XCircle className="w-12 h-12 text-red-500 mb-3" />
+                    )}
+                    <h2 className="text-2xl font-bold text-white mb-1">
+                        {isSuccess ? "Evaluación y Diagnóstico Guardados" : "Error de Diagnóstico"}
+                    </h2>
+                    <p className="text-gray-400">La evaluación ha sido procesada por el modelo de Machine Learning.</p>
+                </div>
+
+                {isSuccess ? (
+                    <div className="space-y-4 text-left">
+                        <div className="p-3 bg-gray-800 rounded-xl">
+                            <p className="text-sm text-teal-300">Nivel de Riesgo:</p>
+                            <p className="text-lg font-semibold text-white">
+                                {result.diagnosticMLMechanicalRiskLevel}
+                            </p>
+                        </div>
+                        <div className="p-3 bg-gray-800 rounded-xl">
+                            <p className="text-sm text-teal-300">Recomendaciones:</p>
+                            <p className="text-md text-white whitespace-pre-line">
+                                {result.diagnosticMLMechanicalRecomendations}
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    <p className="text-red-300 text-center">
+                        Hubo un problema al generar el diagnóstico ML. Por favor, revise la consola para más detalles.
+                    </p>
+                )}
+
+                <div className="mt-8 flex justify-center">
+                    <button
+                        onClick={onClose}
+                        className="px-8 py-3 bg-teal-500 hover:bg-teal-400 text-white font-semibold rounded-xl transition-all"
+                    >
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ===============================================
+// Componente Principal
+// ===============================================
 export default function DashDoctorMechanicalArm() {
     const { id } = useParams();
     const [patient, setPatient] = useState(null);
@@ -14,37 +71,52 @@ export default function DashDoctorMechanicalArm() {
     const [observations, setObservations] = useState({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    
+    // 👇 NUEVOS ESTADOS PARA EL MODAL DE RESULTADOS
+    const [diagnosisResult, setDiagnosisResult] = useState(null);
+    const [showResultModal, setShowResultModal] = useState(false);
+
     const navigate = useNavigate();
 
+    // Función para resetear las evaluaciones
+    const resetEvaluationState = useCallback(() => {
+        setScores({});
+        setObservations({});
+    }, []);
+
+    // Se mantiene igual, solo usa useCallback para ser más seguro
+    const fetchData = useCallback(async () => {
+        setLoading(true);
+        try {
+            // 1. Cargar datos del paciente
+            const patientRes = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/PatientProfileFree/patientdiagnostic/${id}`,
+                { headers: { accept: "text/plain" } }
+            );
+            const patientData = await patientRes.json();
+            if (Array.isArray(patientData) && patientData.length > 0) {
+                setPatient(patientData[0]);
+            }
+
+            // 2. Cargar indicadores
+            const indicatorRes = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/IndicatorCatalog`,
+                { headers: { accept: "text/plain" } }
+            );
+            const indicatorData = await indicatorRes.json();
+            setIndicators(indicatorData);
+        } catch (error) {
+            console.error("Error al cargar datos iniciales:", error);
+        } finally {
+            setLoading(false);
+        }
+    }, [id]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // 1. Cargar datos del paciente
-                const patientRes = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/PatientProfileFree/patientdiagnostic/${id}`,
-                    { headers: { accept: "text/plain" } }
-                );
-                const patientData = await patientRes.json();
-                if (Array.isArray(patientData) && patientData.length > 0) {
-                    setPatient(patientData[0]);
-                }
-
-                // 2. Cargar indicadores
-                const indicatorRes = await fetch(
-                    `${import.meta.env.VITE_API_URL}/api/IndicatorCatalog`,
-                    { headers: { accept: "text/plain" } }
-                );
-                const indicatorData = await indicatorRes.json();
-                setIndicators(indicatorData);
-            } catch (error) {
-                console.error("Error al cargar datos:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchData();
-    }, [id]);
+        // Al montar el componente, aseguramos que el estado de evaluación esté limpio
+        resetEvaluationState();
+    }, [fetchData, resetEvaluationState]);
 
     const handleSliderChange = (indicatorId, value) => {
         setScores((prev) => ({ ...prev, [indicatorId]: value }));
@@ -54,9 +126,19 @@ export default function DashDoctorMechanicalArm() {
         setObservations((prev) => ({ ...prev, [indicatorId]: value }));
     };
 
+    // Función para manejar el cierre del modal y limpiar la evaluación
+    const handleCloseResultModal = () => {
+        setShowResultModal(false);
+        setDiagnosisResult(null);
+        // 👇 LÓGICA CLAVE: Resetear las puntuaciones y observaciones
+        resetEvaluationState(); 
+        // Si quisieras recargar la página: window.location.reload();, pero con resetEvaluationState es más suave.
+    };
+
     const handleSave = async () => {
         if (!patient) return;
         setSaving(true);
+        setDiagnosisResult(null); // Limpiar resultado anterior
 
         try {
             // 1. Guardar evaluaciones individuales
@@ -84,28 +166,29 @@ export default function DashDoctorMechanicalArm() {
                 );
 
                 if (!response.ok) {
+                    const errorDetails = await response.text();
                     throw new Error(
-                        `Error al guardar indicador ${indicator.indicatorCatalogId}`
+                        `Error al guardar indicador ${indicator.indicatorCatalogId}. Detalles: ${errorDetails}`
                     );
                 }
             }
-
+            
             // 2. Preparar datos para API de Machine Learning
             const birthDate = new Date(patient.patientProfileFreeBirthDate);
-            const age =
-                new Date().getFullYear() -
-                birthDate.getFullYear() -
-                (new Date().getMonth() < birthDate.getMonth() ||
-                (new Date().getMonth() === birthDate.getMonth() &&
-                    new Date().getDate() < birthDate.getDate())
-                    ? 1
-                    : 0);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            // Ajuste de edad
+            if (today.getMonth() < birthDate.getMonth() || 
+                (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
 
-            // Mapeo de indicadores -> API ML
+            // Mapeo de indicadores -> API ML (Usando valores predeterminados de 3 si no están evaluados)
+            // NOTA: Es crucial que los IDs (1-8) coincidan con el catálogo real.
             const mlData = {
                 gender: patient.patientProfileFreeGender,
                 patientAge: age,
-                sustainedAttention: scores[1] || 3, // Sustituir ID real de ese indicador
+                sustainedAttention: scores[1] || 3, 
                 planning: scores[2] || 3,
                 categorization: scores[3] || 3,
                 executiveFunction: scores[4] || 3,
@@ -127,27 +210,33 @@ export default function DashDoctorMechanicalArm() {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        accept: "text/plain",
+                        // Ya no se requiere el 'accept: "text/plain"' si la respuesta es JSON
                     },
                     body: JSON.stringify(mlData),
                 }
             );
 
             if (!mlResponse.ok) {
-                throw new Error("Error al generar diagnóstico ML");
+                const errorDetails = await mlResponse.text();
+                // Si falla el ML, aún mostramos el modal, pero con mensaje de error.
+                setDiagnosisResult({}); 
+                setShowResultModal(true);
+                throw new Error(`Error al generar diagnóstico ML. Estado: ${mlResponse.status}. Detalles: ${errorDetails}`);
             }
 
             const mlResult = await mlResponse.json();
-            console.log("Diagnóstico ML:", mlResult);
-
-            alert(
-                `✅ Evaluación y diagnóstico guardados\n\n` +
-                    `Nivel de riesgo: ${mlResult.diagnosticMLMechanicalRiskLevel}\n` +
-                    `Recomendaciones: ${mlResult.diagnosticMLMechanicalRecomendations}`
-            );
+            console.log("Diagnóstico ML exitoso:", mlResult);
+            
+            // ✅ Mostrar modal de éxito
+            setDiagnosisResult(mlResult);
+            setShowResultModal(true);
+            
         } catch (error) {
-            console.error("Error al guardar:", error);
-            alert("❌ Hubo un problema al registrar la evaluación o el diagnóstico");
+            console.error("Error al guardar o diagnosticar:", error);
+            // Si hubo un error en los fetch de guardar o en el ML (no 200), mostramos un modal de error simple.
+            if (!showResultModal) {
+                 alert("❌ Hubo un problema al registrar la evaluación o el diagnóstico. Revise la consola.");
+            }
         } finally {
             setSaving(false);
         }
@@ -156,39 +245,43 @@ export default function DashDoctorMechanicalArm() {
     if (loading)
         return <p className="text-gray-400 text-center mt-10">Cargando...</p>;
 
+    // ===============================================
+    // RENDERIZADO DEL COMPONENTE
+    // ===============================================
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-[#1a202c] text-white">
             {/* Sidebar */}
-        <aside className="w-full md:w-64 bg-[#2d3748] p-6 space-y-6 md:min-h-screen">
-            <div className="text-2xl font-bold text-teal-400 mb-6 text-center md:text-left">
-            Panel Psicólogo
-            </div>
-            <nav className="space-y-4">
-            <Link to="/dashdoctorpatientlist" className="flex items-center gap-3 hover:text-teal-300">
-                <User /> <span>Pacientes</span>
-            </Link>
-            <Link
-                to="/login"
-                onClick={async (e) => {
-                    e.preventDefault();
-                    const confirmed = await confirmLogout();
-                    if (confirmed) {
-                        localStorage.removeItem('token');
-                        navigate('/login', { replace: true });
-                    }
-                }}
-                className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
-            >
-                <LogOut /> <span>Salir</span>
-            </Link>
-            </nav>
-        </aside>
+            <aside className="w-full md:w-64 bg-[#2d3748] p-6 space-y-6 md:min-h-screen">
+                <div className="text-2xl font-bold text-teal-400 mb-6 text-center md:text-left">
+                    Panel Psicólogo
+                </div>
+                <nav className="space-y-4">
+                    <Link to="/dashdoctorpatientlist" className="flex items-center gap-3 hover:text-teal-300">
+                        <User /> <span>Pacientes</span>
+                    </Link>
+                    <Link
+                        to="/login"
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            const confirmed = await confirmLogout();
+                            if (confirmed) {
+                                localStorage.removeItem('token');
+                                navigate('/login', { replace: true });
+                            }
+                        }}
+                        className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
+                    >
+                        <LogOut /> <span>Salir</span>
+                    </Link>
+                </nav>
+            </aside>
 
             {/* Main Content */}
             <main className="flex-1 p-6 sm:p-8 overflow-auto">
                 {/* Encabezado con datos del paciente */}
                 {patient && (
                     <div className="bg-gray-800 rounded-2xl p-6 shadow-md mb-8">
+                        {/* ... (código de datos del paciente sin cambios) ... */}
                         <p className="text-lg font-semibold mb-2">
                             Representante:{" "}
                             <span className="text-teal-400">
@@ -324,7 +417,11 @@ export default function DashDoctorMechanicalArm() {
                     </button>
                 </div>
             </main>
+            
+            {/* Modal de Resultados (Añadido) */}
+            {showResultModal && (
+                <ResultModal result={diagnosisResult} onClose={handleCloseResultModal} />
+            )}
         </div>
     );
 }
-
