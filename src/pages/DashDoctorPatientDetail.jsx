@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Brain, Activity, FileCheck, BarChart } from "lucide-react";
+import { Brain, Activity, FileCheck, BarChart, User, LogOut } from "lucide-react";
+import { confirmLogout } from '../utils/confirmLogout';
+
 
 export default function PatientDetail() {
     const { id } = useParams();
@@ -41,8 +43,22 @@ export default function PatientDetail() {
             Panel Psicólogo
             </div>
             <nav className="space-y-4">
-            <Link to="/pacientes" className="flex items-center gap-3 hover:text-teal-300">
-                ← Volver a lista
+            <Link to="/dashdoctorpatientlist" className="flex items-center gap-3 hover:text-teal-300">
+                <User /> <span>Pacientes</span>
+            </Link>
+            <Link
+                to="/login"
+                onClick={async (e) => {
+                    e.preventDefault();
+                    const confirmed = await confirmLogout();
+                    if (confirmed) {
+                        localStorage.removeItem('token');
+                        navigate('/login', { replace: true });
+                    }
+                }}
+                className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
+            >
+                <LogOut /> <span>Salir</span>
             </Link>
             </nav>
         </aside>
@@ -77,7 +93,7 @@ export default function PatientDetail() {
             />
 
             <DashboardCard 
-                to="/dashDoctorProgress"
+                to={`/dashdoctorprogress/${patient.patientProfileFreeId}`}
                 icon={<BarChart className="text-purple-400" size={32} />} 
                 title="Progreso"
                 description="Seguimiento de avances."

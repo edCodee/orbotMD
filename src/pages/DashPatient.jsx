@@ -8,6 +8,8 @@ import { confirmLogout } from '../utils/confirmLogout';
 
 export default function PacienteDashboard() {
 
+    //estados
+
     const [showModal, setShowModal] = useState(false);
     const [cargandoDiagnostico, setCargandoDiagnostico] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
@@ -16,6 +18,7 @@ export default function PacienteDashboard() {
     const navigate = useNavigate();
     const [progreso, setProgreso] = useState(0);
     const [highlightDiag, setHighlightDiag] = useState(false);
+    const [highlightGame, setHighlightGame] =useState(true);
 
 
 
@@ -141,6 +144,15 @@ export default function PacienteDashboard() {
 
         fetchPerfil();
         fetchDiagnostico();
+
+        // 👈 NUEVA LÍNEA: Desactivar el highlight después de 6 segundos
+        const gameTimeout = setTimeout(() => {
+        setHighlightGame(false);
+        }, 6000); 
+
+        // 👈 NUEVA LÍNEA: Limpiar el timeout al desmontar el componente o si el efecto se vuelve a ejecutar
+        return () => clearTimeout(gameTimeout); 
+
     }, [navigate]);
 
     function calcularEdad(fechaNacimiento) {
@@ -232,6 +244,32 @@ export default function PacienteDashboard() {
             {/* Main */}
             <main className="flex-1 p-6 lg:p-10 space-y-10">
                 {/* Perfil */}
+
+                                {/* NUEVA SECCIÓN: Misión Queso Destacada */}
+                <section className="bg-gray-800 p-6 rounded-xl shadow border-l-4 border-amber-400">
+                    <h2 className="text-xl font-bold text-teal-300 mb-4 flex items-center gap-2">
+                        ¡Nueva Actualización! 🎮
+                    </h2>
+                    <p className="text-gray-300 mb-4">
+                        ¡Diviértete y sigue tu progreso con nuestro nuevo juego!
+                    </p> 
+                    <Link
+                        to="/gamemouse"
+                        // Aplicamos el estilo de "palpitación" (animate-pulse) si highlightGame es true
+                        className={`
+                            inline-flex items-center gap-3 
+                            bg-amber-500 text-gray-900 
+                            font-extrabold px-6 py-3 
+                            rounded-xl shadow-lg 
+                            hover:bg-amber-400 transition-all 
+                            transform hover:scale-105
+                            ${highlightGame ? 'animate-pulse ring-4 ring-amber-300 ring-opacity-75' : ''}
+                        `}
+                    >
+                        <Gamepad2 className="w-6 h-6" /> 
+                        <span>Misión Queso: ¡Jugar Ahora!</span>
+                    </Link>
+                    </section>
                 <section className="bg-gray-800 p-6 rounded-xl shadow">
                     <h2 className="text-xl font-bold text-teal-300 mb-4">Datos Personales del Paciente</h2>
                     {perfil === null && <p className="italic text-gray-400">Cargando datos del paciente...</p>}
@@ -321,6 +359,7 @@ export default function PacienteDashboard() {
                         <p className="italic text-gray-400">Sin registros disponibles.</p>
                     )}
                 </section>
+
 
 
                 {showModal && (

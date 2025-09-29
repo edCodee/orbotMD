@@ -31,7 +31,9 @@ import QuestionResolve from '../pages/questionResolve'
 import DashDoctorPatientList from '../pages/DashDoctorPatientList'
 import PatientDetail from "../pages/DashDoctorPatientDetail";
 import DashDoctorMechanicalArm from "../pages/DashDoctorMechanicalArm";
+import Camera from "../pages/camera"
 import GameMouse from "../pages/GameMouse";
+import ProgressUser from "../pages/ProgressUser"
 
 export default function AppRouter(){
     return(
@@ -65,6 +67,23 @@ export default function AppRouter(){
                 <Route path="/errorpage2" element={<ErrorPage2/>} />
 
                 {/*Rutas Protegidas*/}
+
+                <Route 
+                path="/dashdoctorprogress/:id" 
+                element={
+                    <ProtectedRoute>
+                    <ProgressUser />
+                    </ProtectedRoute>
+                } 
+                />
+
+
+                <Route path="/camera" 
+                element={
+                <ProtectedRoute>
+                    <Camera/>
+                </ProtectedRoute>
+                }/>
 
                 <Route path="/gamemouse" 
                 element={

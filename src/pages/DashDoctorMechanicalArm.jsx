@@ -1,5 +1,10 @@
+import { LogOut, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { confirmLogout } from '../utils/confirmLogout';
+import { Link, useNavigate } from "react-router-dom";
+
+
 
 export default function DashDoctorMechanicalArm() {
     const { id } = useParams();
@@ -9,6 +14,8 @@ export default function DashDoctorMechanicalArm() {
     const [observations, setObservations] = useState({});
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -152,11 +159,30 @@ export default function DashDoctorMechanicalArm() {
     return (
         <div className="flex flex-col md:flex-row min-h-screen bg-[#1a202c] text-white">
             {/* Sidebar */}
-            <aside className="w-full md:w-64 bg-[#2d3748] p-6 space-y-6 md:min-h-screen">
-                <div className="text-2xl font-bold text-teal-400 mb-6 text-center md:text-left">
-                    Panel Psicólogo
-                </div>
-            </aside>
+        <aside className="w-full md:w-64 bg-[#2d3748] p-6 space-y-6 md:min-h-screen">
+            <div className="text-2xl font-bold text-teal-400 mb-6 text-center md:text-left">
+            Panel Psicólogo
+            </div>
+            <nav className="space-y-4">
+            <Link to="/dashdoctorpatientlist" className="flex items-center gap-3 hover:text-teal-300">
+                <User /> <span>Pacientes</span>
+            </Link>
+            <Link
+                to="/login"
+                onClick={async (e) => {
+                    e.preventDefault();
+                    const confirmed = await confirmLogout();
+                    if (confirmed) {
+                        localStorage.removeItem('token');
+                        navigate('/login', { replace: true });
+                    }
+                }}
+                className="flex items-center gap-3 p-2 rounded-xl hover:text-teal-400 transition-all"
+            >
+                <LogOut /> <span>Salir</span>
+            </Link>
+            </nav>
+        </aside>
 
             {/* Main Content */}
             <main className="flex-1 p-6 sm:p-8 overflow-auto">
