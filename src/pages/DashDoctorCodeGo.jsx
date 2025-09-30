@@ -119,34 +119,44 @@ export default function DashDoctorCodeGo() {
     // ----------------------------------------------------
     // useEffect para Cargar Datos del Paciente
     // ----------------------------------------------------
-    const fetchData = useCallback(async () => {
-        setLoading(true);
-        // NOTA: Usar fetch real con la API
-        try {
-            // SIMULACIÓN DE DATOS (Mismos que el ejemplo anterior)
-            const patientData = [{
-                patientProfileFreeId: id,
-                userFirstName: "Mariela",
-                userLastName: "Martinez",
-                patientProfileFreeFirstName: "Rousmery",
-                patientProfileFreeLastName: "Acosta",
-                patientProfileFreeGender: "Femenino",
-                patientProfileFreeBirthDate: "2018-01-12T00:00:00", // Corresponde a 12/1/2018
-            }];
-
-
-            if (Array.isArray(patientData) && patientData.length > 0) {
-                setPatient(patientData[0]);
-            } else {
-                console.error("No se encontraron datos del paciente.");
-                setPatient(null);
-            }
-        } catch (error) {
-            console.error("Error al cargar datos del paciente:", error);
-        } finally {
-            setLoading(false);
+const fetchData = useCallback(async () => {
+    setLoading(true);
+    // NOTA: Usar fetch real con la API
+    try {
+        // 🚀 Lógica de fetch real ADAPTADA
+        const patientRes = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/PatientProfileFree/patientdiagnostic/${id}`,
+            { headers: { accept: "text/plain" } }
+        );
+        
+        // ⚠️ Manejo de respuesta HTTP ⚠️
+        if (!patientRes.ok) {
+            throw new Error(`Error HTTP: ${patientRes.status}`);
         }
-    }, [id]);
+        
+        const patientData = await patientRes.json();
+        
+        // El resto de la lógica de manejo de datos sigue igual
+        if (Array.isArray(patientData) && patientData.length > 0) {
+            setPatient(patientData[0]);
+        } else {
+            console.error("No se encontraron datos del paciente o la respuesta fue vacía.");
+            setPatient(null);
+        }
+    } catch (error) {
+        console.error("Error al cargar datos del paciente:", error);
+        // Opcional: setear un estado de error visible para el usuario
+        // setError(true);
+    } finally {
+        setLoading(false);
+    }
+}, [id]);
+
+// El useEffect permanece igual
+useEffect(() => {
+    fetchData();
+    resetEvaluationState();
+}, [fetchData, resetEvaluationState]);
 
     useEffect(() => {
         fetchData();
@@ -292,7 +302,7 @@ export default function DashDoctorCodeGo() {
         } catch (err) {
             console.error("Error en el proceso de evaluación:", err);
             if (!showResultModal) {
-                 alert("❌ Hubo un problema al enviar la evaluación. Consulte la consola.");
+                alert("❌ Hubo un problema al enviar la evaluación. Consulte la consola.");
             }
         } finally {
             setSending(false);

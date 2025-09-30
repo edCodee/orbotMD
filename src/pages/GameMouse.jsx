@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { stop } from "framer-motion/m";
+import { useNavigate } from 'react-router-dom'; 
+
 
 // Componente para los botones de control (comandos)
 const CommandButton = ({ children, onClick, label }) => {
@@ -192,6 +194,8 @@ const CommandButton = ({ children, onClick, label }) => {
 
     // ----------------- Main component -----------------
     export default function GameMouseV1() {
+    const navigate = useNavigate(); // <--- Descomenta si usas React Router
+
 
     const [mazeIndex, setMazeIndex] = useState(0);
     const [mazeData, setMazeData] = useState(() => getMazeByIndex(0));
@@ -644,6 +648,30 @@ useLayoutEffect(() => {
     };
 
 
+const finishGameAndNavigate = () => {
+    // 1. Detener el monitoreo y la cámara
+    stopMonitoring();
+    stopCamera();
+
+    // 2. Detener los timers del juego
+    // Aunque el useEffect de elapsedTime tiene cleanup, es buena práctica hacer un reset.
+    // Detenemos el loop de ejecución (si estuviera activo)
+    setIsExecuting(false); 
+    // Aseguramos que el estado de tiempo se resetea para detener el timer en el useEffect
+    setStartTime(null); 
+    
+    // 3. Limpiar cualquier estado de modal/resumen
+    setShowModal(false);
+    setSessionSummary(null);
+
+    // 4. Navegar a la página del paciente (Reemplaza con tu lógica de navegación real)
+    navigate('/dashpatient'); // <--- Descomenta si usas React Router
+    
+    // Placeholder para demostrar que la navegación ocurriría
+    console.log("Juego finalizado. Navegando a /dashpatient...");
+};
+
+
 
     // --- Funciones de Modal ---
 // Opción 1: El usuario elige jugar sin monitorear
@@ -819,18 +847,9 @@ useEffect(() => {
             <div className="p-3 md:p-4 rounded-xl bg-white/6 flex flex-col justify-between">
             <div>
                 <div className="flex justify-between items-center mb-4">
-                <div>
-                    <h2 className="text-white text-xl md:text-2xl font-extrabold mb-0">Code & Go — Robotón</h2>
-                    <div className="text-white/80 text-sm">
-                    ¡Programa al ratón para que encuentre el queso!
-                    </div>
-                </div>
                 </div>
 
                 <div className="bg-white/5 p-4 rounded-lg mb-4">
-                <h3 className="text-white font-bold mb-2">
-                    Comandos ({commands.length}/{200})
-                </h3>
                 <div className="flex flex-wrap gap-2 h-56 bg-white/5 p-2 rounded-lg items-start overflow-y-auto">
                     {commands.map((cmd, index) => (
                     <motion.div
@@ -885,30 +904,41 @@ useEffect(() => {
                 </div>
                 </div>
 
-                <div className="flex gap-2 justify-center mt-4">
-                <button
-                    onClick={removeLastCommand}
-                    className="p-2 md:p-3 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
-                >
-                    Borrar último
-                </button>
-                <button
-                    onClick={resetGame}
-                    className="p-2 md:p-3 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
-                >
-                    Reiniciar
-                </button>
-                </div>
-                
-                <button
-                onClick={generateNewMaze}
-                className="w-full mt-4 p-3 rounded-lg font-bold text-teal-900 bg-gradient-to-r from-teal-400 to-cyan-500 transition-all duration-200 hover:scale-105"
-                >
-                Generar Nuevo Laberinto
-                </button>
+                <div class="flex flex-col space-y-3 p-4 bg-gray-800 rounded-xl shadow-2xl">
+                    
+                    <div class="flex space-x-3">
+                        <button
+                            onClick={removeLastCommand}
+                            class="flex-1 p-3 rounded-xl border border-gray-600 bg-gray-700 text-gray-200 hover:bg-gray-600 transition-all text-sm font-medium"
+                        >
+                            🗑️ Borrar último
+                        </button>
 
+                        <button
+                            onClick={resetGame}
+                            class="flex-1 p-3 rounded-xl border border-teal-500/50 bg-teal-800/20 text-teal-300 hover:bg-teal-800/30 transition-all text-sm font-medium"
+                        >
+                            🔄 Reiniciar Nivel
+                        </button>
+                    </div>
+
+                    <button
+                        onClick={finishGameAndNavigate}
+                        class="w-full py-3 rounded-xl bg-red-600 text-white font-bold tracking-wide shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-[1.01]"
+                    >
+                        🛑 Finalizar Juego y Salir
+                    </button>
+    <button
+        onClick={generateNewMaze}
+        class="w-full py-3 rounded-xl font-bold text-gray-900 bg-gradient-to-r from-teal-400 to-cyan-500 transition-all duration-200 hover:scale-[1.01] shadow-teal-500/50 shadow-md"
+    >
+        ✨ Generar Nuevo Laberinto
+    </button>
+                </div>
             </div>
             </div>
+
+            
         </div>
 
 
@@ -1043,9 +1073,15 @@ useEffect(() => {
                                 // ya que generateNewMaze() se encarga de todo el reinicio, incluyendo cerrar el modal.
                                 generateNewMaze(); 
                             }}
-                            className="bg-[#FFCD3C]/90 hover:bg-[#FFCD3C] text-[#01274C] font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105 mt-6 w-full"
+                            className="bg-[#FFCD3C]/90 hover:bg-[#FFCD3C] text-[#01274C] font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105 mt-6 w-full mb-4"
                         >
                             Siguiente Desafío 🚀
+                        </button>
+                        <button 
+                            onClick={finishGameAndNavigate} // Llama a la nueva función
+                            className="bg-red-500/90 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 w-full"
+                        >
+                            Finalizar Juego y Volver
                         </button>
                     </div>
                 ) : (
@@ -1061,10 +1097,16 @@ useEffect(() => {
                         </p>
                         <button
                             onClick={won ? generateNewMaze : resetGame}
-                            className="bg-[#FFCD3C]/90 hover:bg-[#FFCD3C] text-[#01274C] font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105"
+                            className="bg-[#FFCD3C]/90 hover:bg-[#FFCD3C] text-[#01274C] font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105 m-4"
                         >
                             {won ? 'Siguiente Nivel' : 'Nuevo Intento'}
                         </button>
+                                <button 
+                                    onClick={finishGameAndNavigate} // También para el caso de victoria/derrota simple
+                                    className="bg-red-500/90 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full shadow-md transition-all duration-300 w-full"
+                                >
+                                    Finalizar Juego y Volver
+                                </button>
                     </>
                 )}
             </motion.div>
