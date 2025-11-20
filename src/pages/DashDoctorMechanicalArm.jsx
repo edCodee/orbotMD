@@ -205,7 +205,7 @@ export default function DashDoctorMechanicalArm() {
 
             // 3. Llamar API ML
             const mlResponse = await fetch(
-                `https://apidocbot20250917015226-fgg9dddefpcuc6b4.canadacentral-01.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
+                `https://api-orbot-backend.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
                 {
                     method: "POST",
                     headers: {
@@ -215,6 +215,19 @@ export default function DashDoctorMechanicalArm() {
                     body: JSON.stringify(mlData),
                 }
             );
+
+            // 3. Llamar API ML
+            // const mlResponse = await fetch(
+            //     // USAMOS LA VARIABLE DE ENTORNO, YA NO LA URL FIJA
+            //     `${import.meta.env.VITE_API_URL}/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
+            //     {
+            //         method: "POST",
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify(mlData),
+            //     }
+            // );
 
             if (!mlResponse.ok) {
                 const errorDetails = await mlResponse.text();
@@ -235,7 +248,7 @@ export default function DashDoctorMechanicalArm() {
             console.error("Error al guardar o diagnosticar:", error);
             // Si hubo un error en los fetch de guardar o en el ML (no 200), mostramos un modal de error simple.
             if (!showResultModal) {
-                 alert("❌ Hubo un problema al registrar la evaluación o el diagnóstico. Revise la consola.");
+                alert("❌ Hubo un problema al registrar la evaluación o el diagnóstico. Revise la consola.");
             }
         } finally {
             setSaving(false);
