@@ -27,7 +27,7 @@ const initialIndicators = indicatorsMeta.reduce((acc, item) => {
 
 // NOTA: Usamos el mismo endpoint de ML, asumiendo que los indicadores de CodeGo
 // mapean a los mismos 7 campos del modelo de brazo mecánico.
-const ML_API_URL = "https://apidocbot20250917015226-fgg9dddefpcuc6b4.canadacentral-01.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict";
+const ML_API_URL = "https://api-orbot-backend.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict";
 
 
 // ===============================================
