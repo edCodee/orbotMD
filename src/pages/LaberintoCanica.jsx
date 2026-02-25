@@ -28,7 +28,7 @@ const initialIndicators = indicatorsMeta.reduce((acc, item) => {
 
 //const ML_API_URL = "https://apidocbot20250917015226-fgg9dddefpcuc6b4.canadacentral-01.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict";
 
-const ML_API_URL = "https://api-orbot-backend.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict";
+const ML_API_URL = "https://apidocbot20260224220610-b7fnd9fsgyejfmcf.canadacentral-01.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict";
 
 
 // ===============================================
