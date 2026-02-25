@@ -5,7 +5,7 @@ import { User, LogOut, BarChart, HardHat, AlertTriangle, CheckCircle } from "luc
 // import { confirmLogout } from "../utils/confirmLogout";
 
 // API URL para el diagnóstico ML (la que proporcionaste)
-const ML_DIAGNOSTIC_API_URL = "https://api-orbot-backend.azurewebsites.net/api/DiagnosticMLMechanicalArm/by-profile";
+const ML_DIAGNOSTIC_API_URL = "https://apidocbot20260224220610-b7fnd9fsgyejfmcf.canadacentral-01.azurewebsites.net";
 
 
 // Función para obtener el color del nivel de riesgo
