@@ -205,7 +205,7 @@ export default function DashDoctorMechanicalArm() {
 
             // 3. Llamar API ML
             const mlResponse = await fetch(
-                `https://api-orbot-backend.azurewebsites.net/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
+                `${import.meta.env.VITE_API_URL}/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
                 {
                     method: "POST",
                     headers: {
@@ -215,19 +215,6 @@ export default function DashDoctorMechanicalArm() {
                     body: JSON.stringify(mlData),
                 }
             );
-
-            // 3. Llamar API ML
-            // const mlResponse = await fetch(
-            //     // USAMOS LA VARIABLE DE ENTORNO, YA NO LA URL FIJA
-            //     `${import.meta.env.VITE_API_URL}/api/DiagnosticMLMechanicalArm/predict?patientProfileId=${patient.patientProfileFreeId}`,
-            //     {
-            //         method: "POST",
-            //         headers: {
-            //             "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify(mlData),
-            //     }
-            // );
 
             if (!mlResponse.ok) {
                 const errorDetails = await mlResponse.text();

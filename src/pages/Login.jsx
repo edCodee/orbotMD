@@ -147,11 +147,6 @@ export default function LoginPage() {
                             required
                             className="mt-2 block w-full rounded-md bg-white px-3 py-2 text-base text-gray-900 border border-gray-300"
                         />
-                        {/* <div className="mt-2 text-right text-sm">
-                            <a href="#" className="text-indigo-600 hover:text-indigo-500">
-                                ¿Olvidaste tu contraseña?
-                            </a>
-                        </div> */}
                     </div>
 
                     {error && (

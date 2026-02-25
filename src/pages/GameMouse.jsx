@@ -688,7 +688,7 @@ const handleSelectScan = () => {
 
 
 
-const API_URL = 'https://api-orbot-backend.azurewebsites.net/api/ConcetrationMetric/create-free';
+const API_URL = `${import.meta.env.VITE_API_URL}/api/ConcetrationMetric/create-free`;
 
 const sendConcentrationMetrics = async (data) => {
     // 💡 CORRECCIÓN CLAVE: Usar "token" si esa es la clave correcta en localStorage.
